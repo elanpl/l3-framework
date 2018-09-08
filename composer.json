@@ -1,0 +1,20 @@
+{
+    "name": "elanpl/l3-framework",
+    "description": "L3 framework",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-lan.pl",
+            "email": "poczta@e-lan.pl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+	"autoload" :
+		{
+			"psr-4" : {
+				"elanpl\\L3\\": "src"
+			}
+		}
+}
