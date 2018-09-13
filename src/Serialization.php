@@ -44,7 +44,7 @@ class Serialization{
                         $rclass = $rtype_parts[0];
                         $t = explode("/", $type);
                         $rt = explode("/", $rtype_parts[1]);
-                        if($rclass==$ViewModelClass && ($t[0]=="*" || $rt[0]=="*" || $t[0]==$t[0]) && ($t[1]=="*" || $rt[1]=="*" || $t[1]==$t[1])){
+                        if($rclass==$ViewModelClass && ($t[0]=="*" || $rt[0]=="*" || $t[0]==$rt[0]) && ($t[1]=="*" || $rt[1]=="*" || $t[1]==$rt[1])){
                             return $rtype_with_class;
                         }
                     }

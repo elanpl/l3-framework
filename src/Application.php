@@ -167,6 +167,12 @@ class Application{
             if($result instanceof ViewModel){
                 if($SerializationContentType = $this->Serialization->Match($this->Request->AcceptTypes, $result)){
                     $content = $this->Serialization->Serialize($SerializationContentType, $result);
+                    if(is_object($content)){
+                        if($content instanceof Response){
+                            $this->Response = $content;
+                            unset($content);
+                        }
+                    }
                 }
                 else{
                     echo "Serializer not defined for Content-Type: ".$this->Request->Accept."<br>".PHP_EOL;
