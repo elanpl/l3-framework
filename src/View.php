@@ -5,6 +5,7 @@ namespace elanpl\L3;
 class View{
     protected $ViewFileExtension;
     protected $ViewFile;
+    protected $currentModule;
     protected $Context;
 
     public function __construct(){
@@ -54,7 +55,7 @@ class View{
 
     public function Render(){
         if ($viewEngineClass = ViewEngine::Get($this->ViewFileExtension)){
-            $view = new $viewEngineClass();
+            $view = new $viewEngineClass($this->currentModule);
             return $view->render($this->ViewFile, $this->Context);
         }
         else{
@@ -97,21 +98,26 @@ class View{
             $ViewsPath = $_L3->BaseDirectory.$_L3->ApplicationDirectory.DIRECTORY_SEPARATOR
                 .($module!=""?$module.DIRECTORY_SEPARATOR:"").$_L3->ViewsDirectory.DIRECTORY_SEPARATOR;
 
+            $this->currentModule = $module;
+            
             $dirs = array();
 
-            $dirs[] = $ViewsPath.$controller.DIRECTORY_SEPARATOR.$action;
-            $dirs[] = $ViewsPath.$controller.DIRECTORY_SEPARATOR;
-            $dirs[] = $ViewsPath;
+            $dirs[] = $controller.DIRECTORY_SEPARATOR.$action;
+            $dirs[] = $controller.DIRECTORY_SEPARATOR;
+            $dirs[] = '';
 
             foreach($dirs as $dir){
+                $viewName = $dir.($action!=""&&$view!=""?DIRECTORY_SEPARATOR:"").$view;
                 // check if the file exists
-                if(is_file($found = $dir.($action!=""&&$view!=""?DIRECTORY_SEPARATOR:"").$view)){
-                    return $found;
+                if(is_file($ViewsPath.$viewName)){
+                    return $viewName;
                 }
                 // try to add extension and check again
-                else foreach(ViewEngine::GetRegisteredFileExtensions() as $RegisteredExtension){
-                    if(is_file($found = $dir.($action!=""&&$view!=""?DIRECTORY_SEPARATOR:"").$view.$RegisteredExtension)){
-                        return $found;
+                else {
+                    foreach(ViewEngine::GetRegisteredFileExtensions() as $RegisteredExtension){
+                        if(is_file($ViewsPath.$viewName.$RegisteredExtension)){
+                            return $viewName.$RegisteredExtension;
+                        }
                     }
                 }
             }
