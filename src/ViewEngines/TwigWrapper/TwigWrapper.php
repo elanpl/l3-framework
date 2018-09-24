@@ -26,7 +26,11 @@ class TwigWrapper implements \elanpl\L3\ViewEngines\IViewEngine{
          
         $this->twig = new \Twig_Environment($loader, 
                 [ 'cache' => $config['cache'], 'debug' => $config['debug'] ]);
-        
+
+        if( $config['debug'] ){
+            $this->twig->addExtension(new \Twig_Extension_Debug());
+        }
+                
         
         $this->twig->addFunction(
                 new \Twig_SimpleFunction ('asset', function ($string) use ($config) {
