@@ -10,6 +10,9 @@ class Request{
     public $AcceptLanguage;
     public $UserAgent;
     public $Headers;
+    
+    private $RequestData;
+    
     public function __construct(){
         if(isset($_GET['path']))
             $this->Path = $_GET['path'];
@@ -31,6 +34,9 @@ class Request{
                 $this->Headers[$header] = $value;
             }
         }
+        
+        $this->getRequestData();
+        $this->getJsonPost();
     }
 
     public function ParseAccept($accept){
@@ -65,5 +71,43 @@ class Request{
 
         return $result;
     }
+    
+    public function getRequestData(){
+        if(\in_array('application/json', $this->AcceptTypes)){
+            $this->getJsonPost();
+        }
+    }
 
+
+    public function getAll(){
+        return $this->RequestData;
+    }
+    
+    public function get( $fields, $default = null, $erroIfNotExist = false ){
+        if ( \is_array($fields) ) {
+            $result = array();
+            foreach( $fields as $field ) {
+                $result[$field] = getRequestValue( $field, $default, $erroIfNotExist );
+            }
+            return $result;
+        } else {
+            return $this->getRequestValue( $fields, $default, $erroIfNotExist );
+        }
+    }
+
+    private function getRequestValue( $field, $default, $erroIfNotExist ) {
+        if (isset($this->RequestData[ $field ] ))
+            return $this->RequestData[ $field ];
+        elseif ( $erroIfNotExist  )
+            throw new \Exception( $field." not exist!" );
+        else
+            return $default;
+    }       
+    
+    
+    private function getJsonPost(){
+        $request_body = file_get_contents('php://input');
+        $this->RequestData = \json_decode($request_body, true);
+    }
+    
 }

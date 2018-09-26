@@ -15,6 +15,7 @@ class Application{
     //public $Controller; //Active controller
     //public $Module; //Active module
     //public $Action; //Active action
+    public $Config;
 
     public function __construct(){
         //create request object
@@ -44,6 +45,8 @@ class Application{
         include_once($this->ConfigDirectory."routing.php");
         //include the application configuration
         include_once($this->ConfigDirectory.'app.php');
+
+        $this->Config = require($this->ConfigDirectory."config.php");
     }
 
     public function LoadConfigFile($file){
