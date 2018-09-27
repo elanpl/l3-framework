@@ -48,7 +48,12 @@ class View{
             $this->ViewFileExtension = ".".pathinfo($this->ViewFile, PATHINFO_EXTENSION);
         }
         else{
-            throw new \Exception("View file:\"$view\" not found!");
+            $viewError = $view;
+            if(is_object($view) && $view instanceof ViewModel){
+                $viewError = $view->GetModule().'/'.$view->GetController().'/'.$view->GetAction();
+            }
+            
+            throw new \Exception("View file:\"$viewError\" not found!");
         }
         $this->Context = $context;
     }
