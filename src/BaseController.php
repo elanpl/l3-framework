@@ -4,7 +4,7 @@ namespace elanpl\L3;
 
 class BaseController{
 
-    protected static $L3;
+    protected $L3;
 
     public function __construct(){
         global $_L3;
