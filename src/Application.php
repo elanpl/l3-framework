@@ -273,8 +273,8 @@ class Application{
         }
         // routing path not found -> generate 404 response
         else{
-            echo "Routing not found!<br>".PHP_EOL;
-            throw new \Exception("Not implemented!");
+            echo "Routing not found: ".$this->Request->Path."!<br>".PHP_EOL;
+            throw new \UnexpectedValueException ("Routing not found: ".$this->Request->Path."!");
         }
  
     }
