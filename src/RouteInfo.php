@@ -60,7 +60,7 @@ class RouteInfo{
     }
 
     public static function EventHandlerFormatCheck($event_handler, &$match){
-        $pattern = '#^((?<class>[a-z0-9\\\\]+)::)?(?<function>[a-z0-9]+)(\\((?<arguments>[a-z0-9, ]+)?\\))?$#i';
+        $pattern = '#^((?<class>[a-z0-9\\\\]+)::)?(?<function>[a-z0-9]+)(\\((?<arguments>[a-z0-9;, ]+)?\\))?$#i';
         if(preg_match($pattern, $event_handler, $match)){
             if(isset($match['arguments'])){
                 $result = self::EventHandlerArgumentsFormatCheck($match['arguments'],$arguments_match);
@@ -76,12 +76,8 @@ class RouteInfo{
     }
 
     public static function EventHandlerArgumentsFormatCheck($arguments, &$match){
-        $pattern = '#[^$|^]([0-9a-z; ]*)(?:$|,)#i';
-        $result = preg_match_all($pattern, $arguments, $match_all_args);
-        if($result){
-            $match = $match_all_args[1];
-        }
-        return $result;
+        $match = explode(',', $arguments);
+        return $match;
     }
 
  }

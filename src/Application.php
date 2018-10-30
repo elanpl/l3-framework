@@ -201,6 +201,7 @@ class Application{
                 if(isset($eh['class'])){
                     $object = new $eh['class'];
                     $reflection = new \ReflectionMethod($object, $eh['function']);
+                    $fire_args = array();
                     $fire_args[] = $this->Request;
                     $fire_args[] = $this->Router->RouteInfo;
                     if(isset($eh['arguments'])){
