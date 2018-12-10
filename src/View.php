@@ -100,6 +100,11 @@ class View{
             // check [module/]views/controller/ directory (file)
             // check [module/]views/
 
+            if(\strpos($controller, "\\")){
+                $controller = \str_ireplace("\\", "/", $controller);
+            }
+
+
             $ViewsPath = $_L3->BaseDirectory.$_L3->ApplicationDirectory.DIRECTORY_SEPARATOR
                 .($module!=""?$module.DIRECTORY_SEPARATOR:"").$_L3->ViewsDirectory.DIRECTORY_SEPARATOR;
 
