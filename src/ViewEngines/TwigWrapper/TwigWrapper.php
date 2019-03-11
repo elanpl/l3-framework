@@ -6,11 +6,11 @@ class TwigWrapper implements \elanpl\L3\ViewEngines\IViewEngine
 {
     protected $twig;
 
-    public function __construct($currentModule)
+    public function __construct($currentModule, $configPsr)
     {
         global $_L3;
 
-        $config = \config\twig::getTwigConfig();
+        $config = $configPsr();
 
         $loader = new \Twig_Loader_Filesystem();
 
