@@ -12,7 +12,7 @@ class TwigWrapper implements \elanpl\L3\ViewEngines\IViewEngine
 
         $config = $configPsr();
 
-        $loader = new \Twig_Loader_Filesystem();
+        $loader = new \Twig\Loader\FileSystemLoader();
 
         if ($currentModule != '') {
             $moduleViewPath = $_L3->BaseDirectory.$_L3->ApplicationDirectory.DIRECTORY_SEPARATOR
@@ -23,21 +23,21 @@ class TwigWrapper implements \elanpl\L3\ViewEngines\IViewEngine
         $baseViewPath = $_L3->BaseDirectory.$_L3->ApplicationDirectory.DIRECTORY_SEPARATOR.$_L3->ViewsDirectory;
         $loader->addPath($baseViewPath);
 
-        $this->twig = new \Twig_Environment($loader,
+        $this->twig = new \Twig\Environment($loader,
                 ['cache' => $config['cache'], 'debug' => $config['debug']]);
 
         if ($config['debug']) {
-            $this->twig->addExtension(new \Twig_Extension_Debug());
+            $this->twig->addExtension(new \Twig\Extension\DebugExtension());
         }
 
         $this->twig->addFunction(
-                new \Twig_SimpleFunction('asset', function ($string) use ($config) {
+                new \Twig\TwigFunction('asset', function ($string) use ($config) {
                     return trim($config['pageUrl'].'/'.trim($string, '/'), '/');
                 })
             );
 
         $this->twig->addFunction(
-                new \Twig_SimpleFunction('route', function ($string) use ($config) {
+                new \Twig\TwigFunction('route', function ($string) use ($config) {
                     return trim($config['pageUrl'] //.\Helpers\translate::addLanguageToUrl()
                             .'/'.trim($string, '/'), '/');
                 })
